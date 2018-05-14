@@ -1,13 +1,17 @@
-#include<stdio.i>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<unistd.h>
-#include<time.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 struct stat stat1, stat2;
 struct tm *time1, *time2;
-int mon1, mon2, d1, d2;
-int h1, h2, min1, min2;
+
+int month1, month2;
+int hour1, hour2;
+int day1, day2;
+int min1, min2;
 
 void filestat1(void);
 void filestat2(void);
@@ -16,75 +20,125 @@ void filetime2(void);
 void sizecmp(void);
 void blockcmp(void);
 void datecmp(void);
-void datecmp(void);
 void timecmp(void);
 
 int main(void)
 {
- filestat1();
- filestat2();
- filetime1();
- filetime2();
- sizecmp();
- blockcmp();
- datecmp();
- timecmp();
- }
-
- void filestat1(void){
- }
-
- void filestat2(void){
+	filestat1();
+	filestat2();
+	filetime1();
+	filetime2();
+	sizecmp();
+	blockcmp();
+	datecmp();
+	timecmp();
 }
 
- void filetime1(void){
- }
+void filestat1(void)
+{
+	char* File1 = "Text_File1";
+	if (stat(File1, &stat1) < 0)
+	{
+		printf("Not exist %s\n", File1);
+		exit(0);
+	}
+}
 
- void filetime2(void){
- }
+void filestat2(void)
+{
+	char* File2 = "Text_File2";
+	if (stat(File2, &stat2) <0)
+	{
+		printf("Not exist %s\n", File2);
+		exit(0);
+	}
+}
 
- void sizecmp(void){
- }
+void filetime1(void)
+{
+	time1 = localtime(&stat1.st_mtime);
+	month1 = time1->tm_mon;
+	day1 = time1->tm_mday;
+	hour1 = time1->tm_hour;
+	min1 = time1->tm_min;
+}
 
- void blockcmp(void){
- }
+void filetime2(void)
+{
+	time2 = localtime(&stat2.st_mtime);
+	mon2 = time2->tm_mon;
+	d2 = time2->tm_mday;
+	h2 = time2->tm_hour;
+	min2 = time2->tm_min;
+}
 
- void datecmp(void){	
-  int result = 0;
-	if(d1 < d2)
+void sizecmp(void)
+{
+	int file_size1 = stat1.st_size;
+	int file_size2 = stat2.st_size;
+
+	if (file_size1 == file_size2)
+		printf("sizes are equal\n");
+	else
+	{
+		if (file_size1 > file_size2)
+			printf("text1 is bigger\n");
+		else
+			printf("text2 is bigger\n");
+	}
+}
+void blockcmp(void)
+{
+	int file_blk_size1 = stat1.st_blksize;
+	int file_blk_size2 = stat2.st_blksize;
+
+	if (file_blk_size1 == file_blk_size2)
+		printf("sizes are equal\n");
+	else
+	{
+		if (file_blk_size1 > file_blk_size2)
+			printf("text1 is bigger\n");
+		else
+			printf("text2 is bigger\n");
+	}
+}
+
+void datecmp(void) {
+	int result = 0;
+	if (day1 < day2)
 		result = 1;
-	else if(d1 > d2)
-		result = 2;
-  
-	if(mon1 < mon2)
-		result = 1;
-	else if(mon1 > mon2)
+	else if (day1 > day2)
 		result = 2;
 
-	if(!result)
+	if (month1 < month2)
+		result = 1;
+	else if (month1 > month2)
+		result = 2;
+
+	if (!result)
 		printf("same time\n");
-	else if(result == 1)
+	else if (result == 1)
 		printf("text1 is younger\n");
 	else
 		printf("text2 is younger\n");
- }
+}
 
- void timecmp(void){
-  	int result = 0;
-	if(min1 < min2)
+void timecmp(void) {
+	int result = 0;
+	if (min1 < min2)
 		result = 1;
-	else if(min1 > min2)
-		result = 2;
-  
-	if(h1 < h2)
-		result = 1;
-	else if(h1 > h2)
+	else if (min1 > min2)
 		result = 2;
 
-	if(!result)
+	if (hour1 < hour2)
+		result = 1;
+	else if (hour1 > hour2)
+		result = 2;
+
+	if (!result)
 		printf("same date\n");
-	else if(result == 1)
+	else if (result == 1)
 		printf("text2 is younger\n");
 	else
 		printf("text2 is younger\n");
- }
+}
