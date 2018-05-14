@@ -66,9 +66,9 @@ void filestat2(void)
  void filetime2(void)
  {
 	 time2 = localtime(&stat2.st_mtime);
-	 mon2 = time2->tm_mon;
-	 d2 = time2->tm_mday;
-	 h2 = time2->tm_hour;
+	 month2 = time2->tm_mon;
+	 day2 = time2->tm_mday;
+	 hour2 = time2->tm_hour;
 	 min2 = time2->tm_min;
  }
 
