@@ -1,11 +1,17 @@
-#include<stdio.i>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<unistd.h>
-#include<time.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 struct stat stat1, stat2;
 struct tm *time1, *time2;
+
+int month1;
+int hour1;
+int day1;
+int min1;
 
 void filestat1(void);
 void filestat2(void);
@@ -19,23 +25,43 @@ void timecmp(void);
 
 int main(void)
 {
- filestat1();
- filestat2();
- filetime1();
- filetime2();
- sizecmp();
- blockcmp();
- datecmp();
- timecmp();
+	 filestat1();
+	 filestat2();
+	 filetime1();
+	 filetime2();
+	 sizecmp();
+	 blockcmp();
+	 datecmp();
+	 timecmp();
  }
 
- void filestat1(void){
- }
-
- void filestat2(void){
+void filestat1(void)
+{
+	char* File1 = "Text_File1";
+	if (stat(File1, &stat1) < 0)
+	{
+		printf("Not exist %s\n", File1);
+		exit(0);
+	}
 }
 
- void filetime1(void){
+void filestat2(void)
+{
+	char* File2 = "Text_File2";
+	if (stat(File2, &stat2) <0)
+	{
+		printf("Not exist %s\n", File2);
+		exit(0);
+	}
+}
+
+ void filetime1(void)
+ {
+	 time1 = localtime(&stat1.st_mtime);
+	 month1 = time1->tm_mon;
+	 day1 = time1->tm_mday;
+	 hour1 = time1->tm_hour;
+	 min1 = time1->tm_min;
  }
 
  void filetime2(void){
